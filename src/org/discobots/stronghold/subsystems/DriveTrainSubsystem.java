@@ -16,7 +16,7 @@ public class DriveTrainSubsystem extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-	
+	public enum DriveCommandChoice { TANK, ARCADE }
 	/* Motors */
 	TalonSRX frontRight, frontMiddleRight, backMiddleRight, backRight, frontLeft,frontMiddleLeft, backMiddleLeft,
 	backLeft;
@@ -28,29 +28,34 @@ public class DriveTrainSubsystem extends Subsystem {
 	boolean allowRamped = false;
 	private double prevLeft = 0, prevRight = 0;
 	private double prevY = 0, prevX = 0, prevR;
-	int choice=0;
+	DriveCommandChoice choice; // idk if we actually need an instance variable for this b/c we aren't using it later
 
 	static double kSpeedScaling = 1.0;
 
 	
 	public DriveTrainSubsystem() {
-	choice =-1; //default tank drive if no choice chosen (prevents null pointer exception)
+		choice = DriveCommandChoice.TANK; // defaults to tank drive
+		createDriveCommand(choice);
 	}
 	
-	public DriveTrainSubsystem(int choose) {
-		choice = choose;
-		switch(choose)
-		{
-		case 1: new TankDriveCommand();
-		case 2: new ArcadeDriveCommand();
-		default: new TankDriveCommand();
-		}
+	public DriveTrainSubsystem(DriveCommandChoice c) {
+		choice = c;
+		createDriveCommand(choice);
 		/* Motors */
 		
 		/* Sensors */
 
 		/* RobotDrive */
 		
+	}
+	
+	private void createDriveCommand(DriveCommandChoice c)
+	{
+		switch(c)
+		{
+		case TANK: new TankDriveCommand();
+		case ARCADE: new ArcadeDriveCommand();
+		}
 	}
 
 	public void setRamped(boolean a) {
@@ -135,8 +140,10 @@ public class DriveTrainSubsystem extends Subsystem {
 	}
 
 	public void initDefaultCommand() {
-		if (!(choice>=0))
-		setDefaultCommand(new TankDriveCommand());
+		if (choice == null)
+		{
+			setDefaultCommand(new TankDriveCommand());
+		}
 	}
 
 	public double getSpeedScaling() {
