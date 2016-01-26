@@ -8,6 +8,5 @@ This is the DiscoBots 2587's 2016 code. The main project contains robot code and
 Students, please add your name to the contributors list when you commit code.
   
 Contributors:  
-	Lead Programmers: Mason Cole, Thomas McDonald
-	
-	Programmers: Sashank Gogula
+Lead Programmers: Mason Cole, Thomas McDonald
+Programmers: Sashank Gogula
